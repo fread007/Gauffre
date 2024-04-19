@@ -7,12 +7,14 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
     int l;
     int c;
     int[][] morceaux;
+	private boolean tourJoueur1;
 
     public Jeu(int l,int c) {
         this.l = l;
         this.c = c;
         morceaux = new int[l][c];
         morceaux[0][0] = POISON;
+		tourJoueur1 = true;
     }
 
     public void videCase(int i, int j) {
@@ -31,13 +33,28 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 		return morceaux[l][c] == PLEIN;
 	}
 
-	void coup(int x, int y){
-		for (int i = x; i < l; i ++){
-			for (int j = y; j < c; j++){
-				videCase(i, j);
-			}
-		}
+	boolean estPoison(int l, int c) {
+		return morceaux[l][c] == POISON;
 	}
+
+	boolean coup(int x, int y){
+		try {
+			if (estPoison(x, y)) {
+				return false;
+			}
+			for (int i = x; i < l; i ++){
+				for (int j = y; j < c; j++){
+					videCase(i, j);
+				}
+			}
+			tourJoueur1 = !tourJoueur1;
+		}
+		catch(Exception e){
+			System.err.println(e);
+		}
+		return true;
+	}
+
 
 	
 
@@ -50,8 +67,8 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
         // Affichage de la taille initiale du tableau
         System.out.println("Taille initiale du tableau : " + Jeu.morceaux.length + "x" + Jeu.morceaux[0].length);
 
-        for (int i = 0; i < Jeu.morceaux.length; i++) {
-            for (int j = 0; j < Jeu.morceaux[0].length; j++) {
+        for (int i = 0; i < Jeu.l; i++) {
+            for (int j = 0; j < Jeu.c; j++) {
                 System.out.print(Jeu.morceaux[i][j] + " ");
             }
             System.out.println();
