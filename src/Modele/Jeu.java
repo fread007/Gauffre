@@ -4,8 +4,8 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 	static final int PLEIN = 0;
 	static final int VIDE = 1;
 	static final int POISON = 2;
-    int l;
-    int c;
+    private int l;
+    private int c;
     int[][] morceaux;
 	private boolean tourJoueur1;
 
@@ -27,6 +27,10 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 
 	public int colonnes() {
 		return c;
+	}
+
+	public boolean tourJoueur(){
+		return tourJoueur1;
 	}
 
     boolean estPlein(int l, int c) {
@@ -54,7 +58,6 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 		}
 		return true;
 	}
-
 
 	
 
