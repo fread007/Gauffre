@@ -1,55 +1,29 @@
 package Vue;
-/*
- * Sokoban - Encore une nouvelle version (à but pédagogique) du célèbre jeu
- * Copyright (C) 2018 Guillaume Huard
- *
- * Ce programme est libre, vous pouvez le redistribuer et/ou le
- * modifier selon les termes de la Licence Publique Générale GNU publiée par la
- * Free Software Foundation (version 2 ou bien toute autre version ultérieure
- * choisie par vous).
- *
- * Ce programme est distribué car potentiellement utile, mais SANS
- * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
- * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
- * Licence Publique Générale GNU pour plus de détails.
- *
- * Vous devez avoir reçu une copie de la Licence Publique Générale
- * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * États-Unis.
- *
- * Contact:
- *          Guillaume.Huard@imag.fr
- *          Laboratoire LIG
- *          700 avenue centrale
- *          Domaine universitaire
- *          38401 Saint Martin d'Hères
- */
+
 
 import Modele.Jeu;
-import Patterns.Observateur;
 
 import javax.swing.*;
 import java.awt.*;
 
 // L'interface runnable déclare une méthode run
-public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Observateur {
+public class InterfaceGraphique implements Runnable{
 	Jeu j;
 	CollecteurEvenements control;
+	JPanel panel=new JPanel(new GridLayout(6,1));
 	JFrame frame;
 	boolean maximized;
 	NiveauGraphique niv;
 	JLabel nbPas, nbPoussees;
 	JToggleButton IA, animation;
 
-	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
-		j = jeu;
-		control = c;
+	InterfaceGraphique() {
+		//j = jeu;
+		//control = c;
 	}
 
-	public static void demarrer(Jeu j, CollecteurEvenements c) {
-		InterfaceGraphique vue = new InterfaceGraphique(j, c);
-		c.ajouteInterfaceUtilisateur(vue);
+	public static void demarrer(Jeu j) {
+		InterfaceGraphique vue = new InterfaceGraphique();
 		SwingUtilities.invokeLater(vue);
 	}
 
@@ -65,33 +39,12 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Obser
 		}
 	}
 
-	private JLabel creerLabel(String text) {
-		JLabel label = new JLabel(text);
-		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		return label;
-	}
 
-	private JToggleButton creerToggleButton(String text) {
-		JToggleButton bouton = new JToggleButton(text);
-		bouton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		bouton.setFocusable(false);
-		return bouton;
-	}
 
-	private JButton creerButton(String text) {
-		JButton bouton = new JButton(text);
-		bouton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		bouton.setFocusable(false);
-		return bouton;
-	}
 
-	private static Box creerBoiteHorizontale() {
-		Box boite = Box.createHorizontalBox();
-		boite.setAlignmentX(Component.CENTER_ALIGNMENT);
-		return boite;
-	}
-
+	/* 
 	public static JComponent creerAnnulerRefaire(Jeu j, CollecteurEvenements control) {
+		
 		BoutonAnnuler annuler = new BoutonAnnuler(j);
 		annuler.setFocusable(false);
 		BoutonRefaire refaire = new BoutonRefaire(j);
@@ -102,60 +55,61 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Obser
 		annuler.addActionListener(new AdaptateurAnnuler(control));
 		refaire.addActionListener(new AdaptateurRefaire(control));
 		return annulerRefaire;
+		
 	}
+	*/
 
 	public void run() {
 
-		frame = new JFrame("Ma fenetre a moi");
-		Menu menu = new Menu(j,frame);
-
-		//Box boiteTexte = Box.createVerticalBox();
-
-		//boiteTexte.add(Box.createGlue());
-
-
-		niv.addMouseListener(new AdaptateurSouris(niv, control));
-		frame.addKeyListener(new AdaptateurClavier(control));
 		
 
-		// Mise en place de l'interface
-		//frame.add(boiteTexte, BorderLayout.EAST);
-		frame.add(niv);
-		j.ajouteObservateur(this);
+		frame = new JFrame("Ma fenetre a moi");
+		
+		
+		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.LIGHT_GRAY);
+		
 
+		//boiteTexte.add(Box.createGlue());
+		JButton nouvelle= new JButton("Nouvelle partie JcJ");
+		JButton nouvelleIA= new JButton("Nouvelle partie JcIA");
+		JButton changer= new JButton("Changer joueur de départ");
+		JButton regle =new JButton("règle du jeu");
+		JButton charger =new JButton("Charger Partie");
+		JLabel Jeugauffre=new JLabel("GAUFFRE");
+		Jeugauffre.setAlignmentY(Component.CENTER_ALIGNMENT);
+		Font font = Jeugauffre.getFont();
+        float newSize = font.getSize() + 55;
+		Jeugauffre.setFont(font.deriveFont(newSize));
+
+		JPanel PanelGauffre = new JPanel();
+		PanelGauffre.setBackground(new Color(243,217,179));
+		PanelGauffre.add(Jeugauffre);
+		PanelGauffre.setPreferredSize(Jeugauffre.getPreferredSize());
+		
+		nouvelle.setBackground(Color.ORANGE);
+		nouvelleIA.setBackground(new Color(243,217,179));
+		charger.setBackground(Color.ORANGE);
+		changer.setBackground(new Color(243,217,179));
+		regle.setBackground(Color.ORANGE);
+
+		panel.add(PanelGauffre);
+		panel.add(nouvelle);
+		panel.add(nouvelleIA);
+		panel.add(charger);
+		panel.add(changer);
+		panel.add(regle);
+
+		frame.add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 300);
+		frame.pack();
 		frame.setVisible(true);
 	}
 
-	@Override
-	public void changeEtatIA(boolean b) {
-		IA.setSelected(b);
-	}
 
-	@Override
-	public void changeEtatAnimations(boolean b) {
-		animation.setSelected(b);
-	}
+	
 
-	@Override
-	public void decale(int l, int c, double dl, double dc) {
-		niv.decale(l, c, dl, dc);
-	}
+	
 
-	@Override
-	public void metAJourDirection(int dL, int dC) {
-		niv.metAJourDirection(dL, dC);
-	}
 
-	@Override
-	public void changeEtape() {
-		niv.changeEtape();
-	}
-
-	@Override
-	public void miseAJour() {
-		nbPas.setText("Pas : " + j.niveau().nbPas());
-		nbPoussees.setText("Poussées : " + j.niveau().nbPoussees());
-	}
 }
