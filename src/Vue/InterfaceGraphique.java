@@ -105,54 +105,23 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Obser
 	}
 
 	public void run() {
-		// Eléments de l'interface
+
 		frame = new JFrame("Ma fenetre a moi");
-		niv = new NiveauGraphique(j);
+		Menu menu = new Menu(j,frame);
 
-		// Texte et contrôles à droite de la fenêtre
-		Box boiteTexte = Box.createVerticalBox();
+		//Box boiteTexte = Box.createVerticalBox();
 
-		// Titre
-		boiteTexte.add(creerLabel("Sokoban"));
+		//boiteTexte.add(Box.createGlue());
 
-		// Remplissage de l'espace entre le titre et les boutons
-		boiteTexte.add(Box.createGlue());
 
-		// Infos sur le jeu
-		nbPas = creerLabel("Pas : 0");
-		boiteTexte.add(nbPas);
-		nbPoussees = creerLabel("Poussées : 0");
-		boiteTexte.add(nbPoussees);
-
-		// Contrôles comportementaux
-		IA = creerToggleButton("IA");
-		boiteTexte.add(IA);
-		animation = creerToggleButton("Animation");
-		boiteTexte.add(animation);
-		JButton prochain = creerButton("Prochain");
-		boiteTexte.add(prochain);
-
-		// Annuler / refaire
-		boiteTexte.add(creerAnnulerRefaire(j, control));
-
-		// Remplissage de l'espace entre le titre et les boutons
-		boiteTexte.add(Box.createGlue());
-
-		boiteTexte.add(creerLabel("Copyright G. Huard, 2018"));
-
-		// Retransmission des évènements au contrôleur
 		niv.addMouseListener(new AdaptateurSouris(niv, control));
 		frame.addKeyListener(new AdaptateurClavier(control));
-		Timer chrono = new Timer(16, new AdaptateurTemps(control));
-		IA.addActionListener(new AdaptateurIA(control));
-		animation.addActionListener(new AdaptateurAnimations(control));
-		prochain.addActionListener(new AdaptateurProchain(control));
+		
 
 		// Mise en place de l'interface
-		frame.add(boiteTexte, BorderLayout.EAST);
+		//frame.add(boiteTexte, BorderLayout.EAST);
 		frame.add(niv);
 		j.ajouteObservateur(this);
-		chrono.start();
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(500, 300);
