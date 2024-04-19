@@ -1,9 +1,9 @@
 package Modele;
 
 public class Jeu /*extends Historique<Coup> implements Cloneable */{
-	static final int PLEIN = 0;
-	static final int VIDE = 1;
-	static final int POISON = 2;
+	public static final int PLEIN = 0;
+	public static final int VIDE = 1;
+	public static final int POISON = 2;
     private int l;
     private int c;
     int[][] morceaux;
@@ -33,19 +33,19 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 		return tourJoueur1;
 	}
 
-    boolean estPlein(int l, int c) {
+    public boolean estPlein(int l, int c) {
 		return morceaux[l][c] == PLEIN;
 	}
 
-	boolean estPoison(int l, int c) {
+	public boolean estPoison(int l, int c) {
 		return morceaux[l][c] == POISON;
 	}
 	
-	int valeurMorceau(int l, int c){
+	public int valeurMorceau(int l, int c){
 		return morceaux[l][c];
 	}
-	
-	boolean coup(int x, int y){
+
+	public boolean coup(int x, int y){
 		try {
 			if (estPoison(x, y)) {
 				return false;
