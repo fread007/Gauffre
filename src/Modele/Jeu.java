@@ -40,7 +40,11 @@ public class Jeu /*extends Historique<Coup> implements Cloneable */{
 	boolean estPoison(int l, int c) {
 		return morceaux[l][c] == POISON;
 	}
-
+	
+	int valeurMorceau(int l, int c){
+		return morceaux[l][c];
+	}
+	
 	boolean coup(int x, int y){
 		try {
 			if (estPoison(x, y)) {
