@@ -1,108 +1,76 @@
 package Modele;
-/*
- * Sokoban - Encore une nouvelle version (à but pédagogique) du célèbre jeu
- * Copyright (C) 2018 Guillaume Huard
- *
- * Ce programme est libre, vous pouvez le redistribuer et/ou le
- * modifier selon les termes de la Licence Publique Générale GNU publiée par la
- * Free Software Foundation (version 2 ou bien toute autre version ultérieure
- * choisie par vous).
- *
- * Ce programme est distribué car potentiellement utile, mais SANS
- * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
- * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
- * Licence Publique Générale GNU pour plus de détails.
- *
- * Vous devez avoir reçu une copie de la Licence Publique Générale
- * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * États-Unis.
- *
- * Contact:
- *          Guillaume.Huard@imag.fr
- *          Laboratoire LIG
- *          700 avenue centrale
- *          Domaine universitaire
- *          38401 Saint Martin d'Hères
- */
 
-import Global.Configuration;
-import Patterns.Observable;
+public class Jeu /*extends Historique<Coup> implements Cloneable */{
+	static final int PLEIN = 0;
+	static final int VIDE = 1;
+	static final int POISON = 2;
+    int l;
+    int c;
+    int[][] morceaux;
 
-import java.io.InputStream;
+    public Jeu(int l,int c) {
+        this.l = l;
+        this.c = c;
+        morceaux = new int[l][c];
+        morceaux[0][0] = POISON;
+    }
 
-public class Jeu extends Observable {
-	protected Niveau n;
-	LecteurNiveaux l;
-
-	public Jeu() {
-		init(Configuration.lisChaine("FichierNiveaux"));
+    public void videCase(int i, int j) {
+		morceaux[i][j] = VIDE;
 	}
 
-	public Jeu(String name) {
-		init("res/Niveaux/" + name + ".txt");
+    public int lignes() {
+		return l;
 	}
 
-	private void init(String niveaux) {
-		InputStream in;
-		in = Configuration.ouvre(niveaux);
-		Configuration.info("Niveaux trouvés");
-
-		l = new LecteurNiveaux(in);
-		prochainNiveau();
+	public int colonnes() {
+		return c;
 	}
 
-	public Niveau niveau() {
-		return n;
+    boolean estPlein(int l, int c) {
+		return morceaux[l][c] == PLEIN;
 	}
 
-	public Coup elaboreCoup(int x, int y) {
-		return n.elaboreCoup(x, y);
+	void coup(int x, int y){
+		for (int i = x; i < l; i ++){
+			for (int j = y; j < c; j++){
+				videCase(i, j);
+			}
+		}
 	}
 
-	public void joue(Coup c) {
-		n.faire(c);
-		metAJour();
-	}
+	
 
-	public void prochainNiveau() {
-		n = l.lisProchainNiveau();
-		metAJour();
-	}
+    /*public static void main(String[] args) {
+        // Création d'une instance de la classe Jeu
+		int l = 6;
+		int c = 5;
+        Jeu Jeu = new Jeu(l,c);
 
-	public boolean niveauTermine() {
-		return n.estTermine();
-	}
+        // Affichage de la taille initiale du tableau
+        System.out.println("Taille initiale du tableau : " + Jeu.morceaux.length + "x" + Jeu.morceaux[0].length);
 
-	public boolean jeuTermine() {
-		return n == null;
-	}
+        for (int i = 0; i < Jeu.morceaux.length; i++) {
+            for (int j = 0; j < Jeu.morceaux[0].length; j++) {
+                System.out.print(Jeu.morceaux[i][j] + " ");
+            }
+            System.out.println();
+        }
+        
+        Jeu.coup(3,3);
 
-	public int lignePousseur() {
-		return n.lignePousseur();
-	}
+        System.out.println("Nouvelle taille du tableau : " + Jeu.morceaux.length + "x" + Jeu.morceaux[0].length);
 
-	public int colonnePousseur() {
-		return n.colonnePousseur();
-	}
+        System.out.println("Contenu du tableau après mangeage :");
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < c; j++) {
+                System.out.print(Jeu.morceaux[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println(Jeu.morceaux[3][3]);
+    }*/
 
-	public boolean peutAnnuler() {
-		return niveau().peutAnnuler();
-	}
 
-	public boolean peutRefaire() {
-		return niveau().peutRefaire();
-	}
-
-	public Coup annuler() {
-		Coup cp = n.annuler();
-		metAJour();
-		return cp;
-	}
-
-	public Coup refaire() {
-		Coup cp = n.refaire();
-		metAJour();
-		return cp;
-	}
 }
+
